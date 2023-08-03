@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-function ComprehensionQuestion({allMcq, setAllMcq}) {
+function ComprehensionQuestion({comprehension,setComprehension}) {
     const [mcq, setmcq] = useState({ q: "", o1: "", o2: "", o3: "", o4: "", correct: "" })
-    
+    const [allMcq, setAllMcq] = useState([{ q: "Normal adult dogs have how many teeth?", o1: "24", o2: "16", o3: "42", o4: "32", correct: "32" }])
+    const [question, setquestion] = useState("")
     function addingMcq() {
         if (mcq.q && mcq.o1 && mcq.o2 && mcq.o3 && mcq.o4 && mcq.correct) {
             setAllMcq([...allMcq, mcq])
             setmcq({ q: "", o1: "", o2: "", o3: "", o4: "", correct: "" })
         }
     }
+    useEffect(() => {
+      setComprehension({question:question,mcq:allMcq})
+    }, [allMcq,question])
+    
     return (
         <section className='w-full border p-2'>
             <h1 className='text-xl my-2'>Comprehension question</h1>
-            <textarea className='border my-1'></textarea>
+            <textarea value={question} onChange={e => setquestion(e.target.value)} className='border my-1'></textarea>
             <div className="border p-2">
                 <h2 className="text-l my-2">MCQ</h2>
                 <input value={mcq.q} onChange={e => setmcq({ ...mcq, q: e.target.value })} type="text" placeholder='Enter question' className="border my-1" />
