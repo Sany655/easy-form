@@ -5,8 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Preview from './Pages/Preview';
-import Builder from './Pages/Builder';
 import NoPage from './Pages/NoPage';
+import Admin from './Pages/Admin';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,7 +15,8 @@ root.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Preview />} />
-          <Route path="builder" element={<Builder />} />
+          {/* <Route path="builder" element={<Builder />} /> */}
+          <Route path="builder" element={<Admin />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
