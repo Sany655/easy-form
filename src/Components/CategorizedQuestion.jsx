@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 function CategorizedQuestion({ id, question, onUpdate, onDelete }) {
-    const [categoriy, setCategory] = useState("")
+    const [category, setCategory] = useState("")
     const [item, setItem] = useState("")
     const [belongs, setBelogs] = useState("")
 
@@ -11,10 +11,9 @@ function CategorizedQuestion({ id, question, onUpdate, onDelete }) {
                 <span>Question {id}</span>
                 <button className="bg-orange-400 px-2 text-white" onClick={onDelete}>x</button>
             </h1>
-            <input className='border px-2 py-1 my-2 w-full' type="text" placeholder='Question' onChange={e => onUpdate({ ...question, question: e.target.value })} value={question.question} />
+            <input className='border px-2 py-1 my-2 w-full' type="text" placeholder='Question' onChange={e => onUpdate({ ...question, question: e.target.value })} value={question.question} required/>
             <div className="border p-4">
                 <h2 className="text-md mb-2">Categories</h2>
-                {/* showing and deleting the added catagories */}
                 <ul className='list-disc px-6'>
                     {question.categories.map((cat, k) => (
                         <li draggable key={k}>
@@ -23,15 +22,14 @@ function CategorizedQuestion({ id, question, onUpdate, onDelete }) {
                         </li>
                     ))}
                 </ul>
-                <input className='border px-2' type="text" placeholder='Category' value={categoriy} onChange={e => setCategory(e.target.value)} />
+                <input className='border px-2' type="text" placeholder='Category' value={category} onChange={e => setCategory(e.target.value)} />
                 <button className='bg-orange-400 text-white px-4 mx-2' onClick={() => {
-                    if (categoriy.length > 0) onUpdate({ ...question, categories: [...question.categories, categoriy] })
+                    if (category.length > 0) onUpdate({ ...question, categories: [...question.categories, category] })
                     setCategory("")
                 }}>Add</button>
             </div>
             <div className="border p-4 my-2">
                 <h2 className="text-md mb-2">Items</h2>
-                {/* showing the added items and belongs */}
                 <ul className='list-disc'>
                     {question.items.map((i, showingItemsKey) => (
                         <li className='my-1 ms-4' key={showingItemsKey}>
@@ -48,7 +46,6 @@ function CategorizedQuestion({ id, question, onUpdate, onDelete }) {
                             <button onClick={() => onUpdate({ ...question, items: question.items.filter((i, ke) => ke != showingItemsKey) })} className="text-orange-400">Remove</button>
                         </li>))}
                 </ul>
-                {/* adding item and belong */}
                 <input className='border px-2 my-2 me-2' type="text" placeholder='item' value={item} onChange={e => setItem(e.target.value)} />
                 <select className='border px-2 me-2' onChange={e => setBelogs(e.target.value)} value={belongs}>
                     <option>Category</option>

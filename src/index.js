@@ -7,7 +7,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Preview from './Pages/Preview';
 import NoPage from './Pages/NoPage';
 import Admin from './Pages/Admin';
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
@@ -15,16 +14,17 @@ root.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<Preview />} />
-          {/* <Route path="builder" element={<Builder />} /> */}
-          <Route path="builder" element={<Admin />} />
+          <Route path="/create-form" element={<Admin />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
-  // </React.StrictMode>
+  // {/* </React.StrictMode> */}
+
+  // <Demo />
 );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
+reportWebVitals();
