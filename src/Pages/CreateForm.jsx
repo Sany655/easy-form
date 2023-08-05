@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CategorizedQuestion from "../Components/CategorizedQuestion";
 import ClozeQuestion from "../Components/ClozeQuestion";
 import ComprehensionQuestion from "../Components/ComprehensionQuestion";
 import axios from 'axios'
 import Swal from 'sweetalert2'
-function Admin() {
+function CreateForm() {
     const [questions, setQuestions] = useState([]);
     const [questionType, setQuestionType] = useState("");
+    const navigate = useNavigate();
     const addQuestion = () => {
         let newQuestion;
         if (questionType === "Categorized") {
@@ -57,7 +58,6 @@ function Admin() {
     const submitQuestions = () => {
         axios.post("/add-question", { questions: questions })
             .then(res => {
-                console.log(res.data);
                 if (res.data.acknowledged) {
                     Swal.fire(
                         'Good job!',
@@ -65,6 +65,7 @@ function Admin() {
                         'success'
                     )
                     setQuestions([])
+                    return navigate('/forms')
                 }
             })
     }
@@ -106,14 +107,6 @@ function Admin() {
 
     return (
         <>
-            <header className='bg-orange-400 p-4'>
-                <div className="container mx-auto flex justify-between">
-                    <h1 className="text-white md:text-4xl text-lg">Easy Form</h1>
-                    <nav className=''>
-                        <Link className="text-white" to={'/'}>Preview</Link>
-                    </nav>
-                </div>
-            </header>
             <main className="container px-2 mx-auto">
                 <section className="grid md:grid-cols-1 lg:grid-cols-1 gap-4">
                     {questions.length == 0 ? (
@@ -137,4 +130,4 @@ function Admin() {
     );
 }
 
-export default Admin;
+export default CreateForm;

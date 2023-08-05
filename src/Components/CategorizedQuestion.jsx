@@ -11,12 +11,20 @@ function CategorizedQuestion({ id, question, onUpdate, onDelete }) {
                 <span>Question {id}</span>
                 <button className="bg-orange-400 px-2 text-white" onClick={onDelete}>x</button>
             </h1>
-            <input className='border px-2 py-1 my-2 w-full' type="text" placeholder='Question' onChange={e => onUpdate({ ...question, question: e.target.value })} value={question.question} required/>
+            <input className='border px-2 py-1 my-2 w-full' type="text" placeholder='Question' onChange={e => onUpdate({ ...question, question: e.target.value })} value={question.question} required />
             <div className="border p-4">
                 <h2 className="text-md mb-2">Categories</h2>
-                <ul className='list-disc px-6'>
+                <ul className='list-disc px-6' onDragOver={e => e.preventDefault()}>
                     {question.categories.map((cat, k) => (
-                        <li draggable key={k}>
+                        <li draggable key={k} onDragStart={e => {
+                            e.dataTransfer.setData('text/plain', k)
+                        }} id={cat} onDrop={e => {
+                            const draggedIndex = e.dataTransfer.getData('text/plain');
+                            const newItems = [...question.categories];
+                            newItems[k] = question.categories[draggedIndex];
+                            newItems[draggedIndex] = question.categories[k];
+                            onUpdate({ ...question, categories: newItems})
+                        }}>
                             <span>{cat}</span>
                             <button className='px-2 my-1 text-orange-400' onClick={() => onUpdate({ ...question, categories: question.categories.filter((cat, ke) => ke != k) })}>Remove</button>
                         </li>
@@ -30,9 +38,17 @@ function CategorizedQuestion({ id, question, onUpdate, onDelete }) {
             </div>
             <div className="border p-4 my-2">
                 <h2 className="text-md mb-2">Items</h2>
-                <ul className='list-disc'>
+                <ul className='list-disc' onDragOver={e => e.preventDefault()}>
                     {question.items.map((i, showingItemsKey) => (
-                        <li className='my-1 ms-4' key={showingItemsKey}>
+                        <li className='my-1 ms-4' key={showingItemsKey} draggable onDragStart={e => {
+                            e.dataTransfer.setData('text/plain',showingItemsKey)
+                        }} onDrop={e => {
+                            const draggedIndex = e.dataTransfer.getData('text/plain');
+                            const newItems = [...question.items];
+                            newItems[showingItemsKey] = question.items[draggedIndex];
+                            newItems[draggedIndex] = question.items[showingItemsKey];
+                            onUpdate({ ...question, items: newItems})
+                        }}>
                             <input className='border px-1' type="text" value={i.item} onChange={e => {
                                 [...question.items][showingItemsKey].item = e.target.value
                                 onUpdate({ ...question, items: [...question.items] })

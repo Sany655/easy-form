@@ -5,7 +5,7 @@ function ClozeQuestion({ id, question, onUpdate, onDelete }) {
     function addToSelects() {
         if (selected.str) {
             if (question.preview.length == 0) question.preview = question.para
-            if (question.blanks.indexOf(selected.str)<0) {
+            if (question.blanks.indexOf(selected.str) < 0) {
                 onUpdate({ ...question, blanks: question.blanks.push(selected.str) });
             }
             onUpdate({ ...question, preview: question.preview.replace(selected.str, "____") });
@@ -23,12 +23,21 @@ function ClozeQuestion({ id, question, onUpdate, onDelete }) {
                 <span>Question {id}</span>
                 <button className="bg-orange-400 px-2 text-white" onClick={onDelete}>x</button>
             </h1>
+            <p className="m-2">{question.preview}</p>
             <textarea rows={3} onSelect={handleSelectedText} onChange={(e) => onUpdate({ ...question, para: e.target.value })} type="text" placeholder='Enter paragraph' className="border p-2 w-full" defaultValue={question.para}></textarea>
             <button className='bg-orange-400 text-white px-2 ms-1' onClick={addToSelects}>Click to blank</button>
-            <p className="m-2">{question.preview}</p>
-            <ul className="list-disc mx-6">
+            <ul className="list-disc mx-6" onDragOver={e => e.preventDefault()}>
                 {question.blanks.map((list, index) => (
-                    <li key={index}>{list}</li>
+                    <li draggable key={index} onDragStart={e => {
+                        e.dataTransfer.setData('text/plain', index)
+                    }}
+                        onDrop={e => {
+                            const draggedIndex = e.dataTransfer.getData('text/plain');
+                            const newItems = [...question.blanks];
+                            newItems[index] = question.blanks[draggedIndex];
+                            newItems[draggedIndex] = question.blanks[index];
+                            onUpdate({...question,blanks:newItems})
+                        }}>{list}</li>
                 ))}
             </ul>
         </section>

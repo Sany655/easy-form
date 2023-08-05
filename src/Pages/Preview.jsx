@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios'
 import PreviewCategorized from '../Components/PreviewCategorized';
 import PreviewCloze from '../Components/PreviewCloze';
@@ -8,8 +8,9 @@ import Swal from 'sweetalert2'
 function Preview() {
     const [questions, setQuestions] = useState([])
     const [submit, setSubmit] = useState(false)
+    const { id } = useParams();
     useEffect(() => {
-        axios.get("get-question")
+        axios.get("get-question?id="+id)
             .then(res => {
                 if(res.data.questions.length) setQuestions(res.data.questions)
             })
@@ -29,14 +30,6 @@ function Preview() {
 
     return (
         <div>
-            <header className='bg-orange-400 p-4'>
-                <div className="container mx-auto flex justify-between">
-                    <h1 className="text-white md:text-4xl text-lg">Easy Form</h1>
-                    <nav className=''>
-                        <Link className="me-2 text-white" to={'/create-form'}>Create Form</Link>
-                    </nav>
-                </div>
-            </header>
             {
                 !submit?<section className='p-2 md:p-0 container mx-auto'>
                 {

@@ -6,20 +6,25 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Preview from './Pages/Preview';
 import NoPage from './Pages/NoPage';
-import Admin from './Pages/Admin';
+import CreateForm from './Pages/CreateForm';
+import Demo from './Demo'
+import Landing from './Pages/Landing';
+import Forms from './Pages/Forms';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Preview />} />
-          <Route path="/create-form" element={<Admin />} />
+          <Route index element={<Landing />} />
+          <Route path='/forms' element={<Forms />} />
+          <Route path='/preview/:id' element={<Preview />} />
+          <Route path="/create-form" element={<CreateForm />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
-  // {/* </React.StrictMode> */}
+  </React.StrictMode>
 
   // <Demo />
 );
