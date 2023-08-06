@@ -2,7 +2,8 @@ import './App.css';
 import { Link, Outlet, useLocation } from "react-router-dom";
 import axios from 'axios';
 function App() {
-    axios.defaults.baseURL = "http://localhost:5000/";
+    // axios.defaults.baseURL = "http://localhost:5000/";
+    axios.defaults.baseURL = "https://easy-form-server.onrender.com";
     const location = useLocation();
     return (
         <>

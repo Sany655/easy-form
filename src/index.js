@@ -7,10 +7,12 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Preview from './Pages/Preview';
 import NoPage from './Pages/NoPage';
 import CreateForm from './Pages/CreateForm';
-import Demo from './Demo'
 import Landing from './Pages/Landing';
 import Forms from './Pages/Forms';
+import init from './firebase.config';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+init()
 root.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -25,8 +27,6 @@ root.render(
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
-
-  // <Demo />
 );
 
 // If you want to start measuring performance in your app, pass a function

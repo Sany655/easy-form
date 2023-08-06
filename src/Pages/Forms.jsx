@@ -19,7 +19,6 @@ function Forms() {
             })
             .finally(() => {
                 setLoading(false)
-                console.log(JSON.parse(localStorage.getItem("questions")));
             })
     }, [])
 
