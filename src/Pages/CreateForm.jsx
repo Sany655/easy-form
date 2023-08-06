@@ -65,7 +65,18 @@ function CreateForm() {
                         'success'
                     )
                     setQuestions([])
-                    return navigate('/forms')
+                    navigate('/forms')
+                }
+            }).catch(err => {
+                if (err.code === "ERR_NETWORK") {
+                    localStorage.setItem("questions", JSON.stringify(questions))
+                    Swal.fire(
+                        'Good job!',
+                        'Form is created in localStrorage due to network error!',
+                        'success'
+                    )
+                    setQuestions([])
+                    navigate('/forms')
                 }
             })
     }

@@ -12,10 +12,14 @@ function Forms() {
                 setForms(res.data)
             })
             .catch(err => {
-                console.log(err);
+                if (err.code === "ERR_NETWORK") {
+                    setForms(JSON.parse(localStorage.getItem("questions")))
+                    Swal.fire('Offline', 'Data is loading from local, due to server error!', 'info')
+                }
             })
             .finally(() => {
                 setLoading(false)
+                console.log(JSON.parse(localStorage.getItem("questions")));
             })
     }, [])
 
@@ -26,7 +30,6 @@ function Forms() {
             showCancelButton: true,
             confirmButtonText: 'Yes',
         }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 axios.delete('/delete-form?id=' + id)
                     .then(res => {
@@ -36,7 +39,7 @@ function Forms() {
                         }
                     })
                     .catch(err => {
-                        console.log(err);
+                        Swal.fire('Error!', 'Server is down now, try letter.', 'error')
                     })
             }
         })
@@ -45,21 +48,21 @@ function Forms() {
     return (
         <div className="container mx-auto">
             {
-                loading?<img className='w-full text-center' src="/spinner.gif" alt="" />:
-                forms.length === 0 ? <h1 className="text-slate-300 my-24 text-center text-4xl"><Link to='/create-form'>Create Forms</Link></h1> : (
-                    forms.map((form, index) => (
-                        <div key={index} className="border p-4 flex justify-between">
-                            <div>
-                                <h1 className="text-2xl">Form id: {form._id}</h1>
-                                <p>Total Quwstions: {form.questions.length}</p>
+                loading ? <img className='w-full text-center' src="/spinner.gif" alt="" /> :
+                    forms?.length === 0 ? <h1 className="text-slate-300 my-24 text-center text-4xl"><Link to='/create-form'>Create Forms</Link></h1> : (
+                        forms.map((form, index) => (
+                            <div key={index} className="border p-4 flex justify-between">
+                                <div>
+                                    <h1 className="text-2xl">Form id: {form._id}</h1>
+                                    <p>Total Quwstions: {form?.questions?.length}</p>
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <Link to={`/preview/${form._id?form._id:index}`} className='text-orange-400'>Preview</Link>
+                                    <button className="text-orange-400" onClick={() => removeForm(form._id)}>Remove</button>
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-4">
-                                <Link to={'/preview/'+form._id} className='text-orange-400'>Preview</Link>
-                                <button className="text-orange-400" onClick={() => removeForm(form._id)}>Remove</button>
-                            </div>
-                        </div>
-                    ))
-                )
+                        ))
+                    )
             }
         </div>
     )
